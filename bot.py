@@ -3,12 +3,14 @@ import os
 
 from discord import Game
 from discord.ext.commands import Bot
-from utils import checks
+import youtube_dl
 
 BOT_PREFIX = ("?", "!")
 TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 
 client = Bot(command_prefix=BOT_PREFIX)
+
+players = {}
 
 
 @client.event
@@ -23,15 +25,44 @@ async def square(number):
     await client.say(str(number) + " squared is " + str(squared_value))
 
 
-@client.command()
-async def play(song):
-    await client.say("this will get \"{}\" from youtube".format(song))
+@client.command(pass_context=True)
+async def play(ctx, url):
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
 
 
-@client.command()
-@checks.is_owner()
-async def _reload():
-    pass
+@client.command(pass_context=True)
+async def stop(ctx):
+    server = ctx.message.server
+    players.get(server.id).stop()
+
+
+@client.command(pass_context=True)
+async def pause(ctx):
+    server = ctx.message.server
+    players.get(server.id).pause()
+
+
+@client.command(pass_context=True)
+async def resume(ctx):
+    server = ctx.message.server
+    player = players.get(server.id).resume()
+
+
+@client.command(pass_context=True)
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    await client.join_voice_channel(channel)
+
+
+@client.command(pass_context=True)
+async def leave(ctx):
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    await voice_client.disconnect()
 
 
 async def list_servers():
@@ -45,3 +76,7 @@ async def list_servers():
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)
+
+"""
+!play https://www.youtube.com/watch?v=pfCYPVxWEMI
+"""
