@@ -78,8 +78,8 @@ async def leave(ctx):
 async def m8(ctx):
     server = ctx.message.server
     voice_channel = await join(ctx)
-    if voice_channel is None:
-        voice_channel = client.voice_client_in(server)
+    if not voice_channel:
+        return None
     player = voice_channel.create_ffmpeg_player('M8.mp4', after=lambda: print('done'))
     players[server.id] = player
     player.start()
@@ -107,5 +107,4 @@ async def list_servers():
         await asyncio.sleep(600)
 
 
-client.loop.create_task(list_servers())
 client.run(TOKEN)
