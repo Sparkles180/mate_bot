@@ -74,7 +74,7 @@ async def leave(ctx):
 @client.command(pass_context=True)
 async def m8(ctx):
     server = ctx.message.server
-    voice_channel = join(ctx)
+    voice_channel = await join(ctx)
     if voice_channel is None:
         voice_channel = client.voice_client_in(server)
     player = voice_channel.create_ffmpeg_player('M8.mp4', after=lambda: print('done'))
