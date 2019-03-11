@@ -59,6 +59,9 @@ async def resume(ctx):
 
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
+    if channel is None:
+        client.say("join a server nerd")
+        return None
     if not client.is_voice_connected(channel.server):
         return await client.join_voice_channel(channel)
     return None
