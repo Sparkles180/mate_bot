@@ -1,13 +1,11 @@
 import asyncio
 import os
 import subprocess
-from subprocess import call
 
 from discord import Game
 from discord.ext.commands import Bot
-import youtube_dl
 
-BOT_PREFIX = ("?", "!")
+BOT_PREFIX = "$"
 TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 
 client = Bot(command_prefix=BOT_PREFIX)
@@ -51,7 +49,7 @@ async def pause(ctx):
 @client.command(pass_context=True)
 async def resume(ctx):
     server = ctx.message.server
-    player = players.get(server.id).resume()
+    players.get(server.id).resume()
 
 
 @client.command(pass_context=True)
@@ -68,10 +66,23 @@ async def leave(ctx):
     await voice_client.disconnect()
 
 
+@client.command(pass_context=True)
+async def m8(ctx):
+    server = ctx.message.author.voice.voice_channel
+    voice_channel = await client.join_voice_channel(server)
+    player = await voice_channel.create_ffmpeg_player('M8.mp4', after=lambda: print('done'))
+    players[server.id] = player
+
+
 @client.command()
 async def reload():
-    await client.close()
+    await client.logout()
     subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
+
+
+@client.command()
+async def close():
+    await client.logout()
 
 
 async def list_servers():
