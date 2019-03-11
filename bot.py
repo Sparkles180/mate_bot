@@ -31,6 +31,7 @@ async def square(number):
 
 @client.command(pass_context=True)
 async def play(ctx, url):
+    await join(ctx)
     server = ctx.message.server
     voice_client = client.voice_client_in(server)
     player = await voice_client.create_ytdl_player(url)
@@ -59,8 +60,8 @@ async def resume(ctx):
 
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
-    if channel is None:
-        client.say("join a server nerd")
+    if not channel:
+        await client.say("join a server nerd")
         return None
     if not client.is_voice_connected(channel.server):
         return await client.join_voice_channel(channel)
