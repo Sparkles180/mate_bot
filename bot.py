@@ -42,6 +42,7 @@ async def play(ctx, url):
 async def stop(ctx):
     server = ctx.message.server
     players.get(server.id).stop()
+    await leave()
 
 
 @client.command(pass_context=True)
@@ -63,7 +64,6 @@ async def join(ctx):
     return None
 
 
-@client.command(pass_context=True)
 async def leave(ctx):
     server = ctx.message.server
     if client.is_voice_connected(server):
