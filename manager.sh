@@ -3,6 +3,7 @@
 function reload() {
     pkill -f bot.py
     git pull
+    sleep 5
     python3 bot.py
 }
 

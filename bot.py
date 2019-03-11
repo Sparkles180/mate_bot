@@ -1,5 +1,7 @@
 import asyncio
 import os
+import subprocess
+from subprocess import call
 
 from discord import Game
 from discord.ext.commands import Bot
@@ -61,8 +63,15 @@ async def join(ctx):
 @client.command(pass_context=True)
 async def leave(ctx):
     server = ctx.message.server
+    print(server.id)
     voice_client = client.voice_client_in(server)
     await voice_client.disconnect()
+
+
+@client.command()
+async def reload():
+    await client.close()
+    subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
 
 
 async def list_servers():
