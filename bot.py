@@ -3,7 +3,11 @@ import os
 import subprocess
 
 from discord import Game
+from discord.ext import commands
 from discord.ext.commands import Bot
+
+from utils import checks
+from utils.checks import is_admin
 
 BOT_PREFIX = "$"
 TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
@@ -55,32 +59,39 @@ async def resume(ctx):
 @client.command(pass_context=True)
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
-    await client.join_voice_channel(channel)
+    if not client.is_voice_connected(channel.server):
+        return await client.join_voice_channel(channel)
+    return None
 
 
 @client.command(pass_context=True)
 async def leave(ctx):
     server = ctx.message.server
-    print(server.id)
-    voice_client = client.voice_client_in(server)
-    await voice_client.disconnect()
+    if client.is_voice_connected(server):
+        voice_client = client.voice_client_in(server)
+        await voice_client.disconnect()
 
 
 @client.command(pass_context=True)
 async def m8(ctx):
-    server = ctx.message.author.voice.voice_channel
-    voice_channel = await client.join_voice_channel(server)
-    player = await voice_channel.create_ffmpeg_player('M8.mp4', after=lambda: print('done'))
+    server = ctx.message.server
+    voice_channel = join(ctx)
+    if voice_channel is None:
+        voice_channel = client.voice_client_in(server)
+    player = voice_channel.create_ffmpeg_player('M8.mp4', after=lambda: print('done'))
     players[server.id] = player
+    player.start()
 
 
-@client.command()
+@client.command(pass_context=True)
+@is_admin()
 async def reload():
     await client.logout()
     subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
 
 
-@client.command()
+@client.command(pass_context=True)
+@is_admin()
 async def close():
     await client.logout()
 
