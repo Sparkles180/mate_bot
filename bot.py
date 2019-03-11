@@ -42,7 +42,7 @@ async def play(ctx, url):
 async def stop(ctx):
     server = ctx.message.server
     players.get(server.id).stop()
-    await leave()
+    await leave(ctx)
 
 
 @client.command(pass_context=True)
