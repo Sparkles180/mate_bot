@@ -56,7 +56,6 @@ async def resume(ctx):
     players.get(server.id).resume()
 
 
-@client.command(pass_context=True)
 async def join(ctx):
     channel = ctx.message.author.voice.voice_channel
     if not client.is_voice_connected(channel.server):
