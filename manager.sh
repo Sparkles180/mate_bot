@@ -11,3 +11,12 @@ function setup() {
     pip install -r requirements.txt
     python3 bot.py
 }
+
+function start() {
+    if [[ -d venv/ ]]; then
+        setup
+    else
+        source venv/bin/activate
+        python3 bot.py
+     fi
+}
