@@ -14,6 +14,39 @@ TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 client = Bot(command_prefix=commands.when_mentioned_or("$"))
 
 players = {}
+queues = {}
+
+
+def check_queue(server_id):
+    if queues[server_id]:
+        player = queues[server_id].pop(0)
+        player.start()
+        client.say("now playing: " + player.title)
+
+
+async def queue(server_id, player):
+    if server_id in queues:
+        queues[server_id].append(player)
+    else:
+        queues[server_id] = [player]
+    await client.say("video queue " + player.title)
+
+
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    if not channel:
+        await client.say("join a server nerd")
+        return None
+    if not client.is_voice_connected(channel.server):
+        return await client.join_voice_channel(channel)
+    return None
+
+
+async def leave(ctx):
+    server = ctx.message.server
+    if client.is_voice_connected(server):
+        voice_client = client.voice_client_in(server)
+        await voice_client.disconnect()
 
 
 @client.event
@@ -23,9 +56,11 @@ async def on_ready():
 
 
 @client.command()
-async def square(number):
-    squared_value = int(number) * int(number)
-    await client.say(str(number) + " squared is " + str(squared_value))
+async def test():
+    await client.say("test")
+
+
+"""Music Commands"""
 
 
 @client.command(pass_context=True)
@@ -33,9 +68,13 @@ async def play(ctx, url):
     await join(ctx)
     server = ctx.message.server
     voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url)
-    players[server.id] = player
-    player.start()
+    player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+    if players.get(server.id) is None:
+        players[server.id] = player
+        player.start()
+        await  client.say("now playing " + player.title)
+    else:
+        await queue(server.id, player)
 
 
 @client.command(pass_context=True)
@@ -57,21 +96,13 @@ async def resume(ctx):
     players.get(server.id).resume()
 
 
-async def join(ctx):
-    channel = ctx.message.author.voice.voice_channel
-    if not channel:
-        await client.say("join a server nerd")
-        return None
-    if not client.is_voice_connected(channel.server):
-        return await client.join_voice_channel(channel)
-    return None
-
-
-async def leave(ctx):
+@client.command(pass_context=True)
+async def skip(ctx):
     server = ctx.message.server
-    if client.is_voice_connected(server):
-        voice_client = client.voice_client_in(server)
-        await voice_client.disconnect()
+    if len(queues) <= 1:
+        players.get(server.id).stop()
+    else:
+        await client.say("Last song mate")
 
 
 @client.command(pass_context=True)
@@ -83,6 +114,18 @@ async def m8(ctx):
     player = voice_channel.create_ffmpeg_player('M8.mp4', after=lambda: print('done'))
     players[server.id] = player
     player.start()
+
+
+@client.command(pass_context=True)
+async def list_playlist(ctx):
+    server = ctx.message.server
+    result = []
+    for player in queues[server.id]:
+        result += [player.title]
+    await client.say("queued videos are " + str(result))
+
+
+"""admin commands"""
 
 
 @client.command(pass_context=True)
