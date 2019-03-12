@@ -14,9 +14,9 @@ function setup() {
 
 function start() {
     if [[ -d venv/ ]]; then
-        setup
-    else
         source venv/bin/activate
         python3 bot.py
+    else
+        setup
      fi
 }
