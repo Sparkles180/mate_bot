@@ -141,6 +141,12 @@ async def close():
     await client.logout()
 
 
+@client.event
+async def on_message(message):
+    print(message.author)
+    await client.process_commands(message)
+
+
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed:
