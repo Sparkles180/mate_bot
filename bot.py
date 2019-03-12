@@ -2,17 +2,16 @@ import asyncio
 import os
 import subprocess
 
+import discord
 from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
 
-from utils import checks
 from utils.checks import is_admin
 
-BOT_PREFIX = "$"
 TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 
-client = Bot(command_prefix=BOT_PREFIX)
+client = Bot(command_prefix=commands.when_mentioned_or("$"))
 
 players = {}
 
