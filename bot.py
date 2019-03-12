@@ -143,7 +143,8 @@ async def close():
 
 @client.event
 async def on_message(message):
-    print(message.author)
+    if message.author == "GitHub#0000":
+        reload()
     await client.process_commands(message)
 
 
