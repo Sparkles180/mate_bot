@@ -57,7 +57,7 @@ async def on_ready():
 
 @client.command(pass_context=True)
 async def test(ctx):
-    await client.say(ctx.server.id)
+    await client.say(ctx.message.server.id)
 
 
 """Music Commands"""
