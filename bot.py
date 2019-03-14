@@ -87,6 +87,7 @@ async def play(ctx, url):
 async def stop(ctx):
     server = ctx.message.server
     players.get(server.id).stop()
+    players.pop(server.id)
     await leave(ctx)
 
 
