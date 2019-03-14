@@ -18,11 +18,14 @@ players = {}
 queues = {}
 
 
-def check_queue(server_id):
+def check_queue(ctx):
+    server_id = ctx.message.server.id;
     if queues[server_id]:
-        player = queues[server_id].pop(0)
-        player.start()
-        client.say("now playing: " + player.title)
+        players[server_id] = queues[server_id].pop(0)
+        players[server_id].start()
+        client.say("now playing: " + players[server_id].title)
+    elif not queues[server_id]:
+        leave(ctx)
 
 
 async def queue(server_id, player):
@@ -74,7 +77,7 @@ async def play(ctx, url):
     await join(ctx)
     server = ctx.message.server
     voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+    player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(ctx))
     if players.get(server.id) is None:
         players[server.id] = player
         player.start()
@@ -86,8 +89,9 @@ async def play(ctx, url):
 @client.command(pass_context=True)
 async def stop(ctx):
     server = ctx.message.server
-    players.get(server.id).stop()
-    players.pop(server.id)
+    if not players.get(server.id) is None:
+        players.get(server.id).stop()
+        players.pop(server.id)
     await leave(ctx)
 
 
