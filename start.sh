@@ -18,6 +18,7 @@ function start() {
         setup
      fi
      echo $?
+     git pull
     done
 
 }
