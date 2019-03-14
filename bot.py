@@ -49,6 +49,11 @@ async def leave(ctx):
         await voice_client.disconnect()
 
 
+def reload_help():
+    client.logout()
+    subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
+
+
 @client.event
 async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
@@ -131,8 +136,7 @@ async def list_playlist(ctx):
 @client.command(pass_context=True)
 @is_admin()
 async def reload():
-    await client.logout()
-    subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
+    reload_help()
 
 
 @client.command(pass_context=True)
