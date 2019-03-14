@@ -3,7 +3,7 @@
 set -e
 
 function reload() {
-    pkill -p bot.py
+    pkill -f bot.py
     git pull
     python3 bot.py
 }
