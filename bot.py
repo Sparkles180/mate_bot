@@ -50,7 +50,7 @@ async def leave(ctx):
         await voice_client.disconnect()
 
 
-async def reload_help():
+async def reload_helper_func():
     await client.logout()
     sys.exit(0)
 
@@ -137,7 +137,7 @@ async def list_playlist(ctx):
 @client.command(pass_context=True)
 @is_admin()
 async def reload():
-    await reload_help()
+    await reload_helper_func()
 
 
 @client.command(pass_context=True)
@@ -152,7 +152,7 @@ async def on_message(message):
     if message.server.id == "554431614042636317" and \
             str(message.author) == "GitHub#0000":
         await client.send_message(message.channel, "reloading mate")
-        await reload_help()
+        await reload_helper_func()
     await client.process_commands(message)
 
 
