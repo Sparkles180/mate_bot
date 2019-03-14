@@ -151,7 +151,7 @@ async def close():
 async def on_message(message):
     if message.server.id == "554431614042636317" and \
             str(message.author) == "GitHub#0000":
-        await client.say(message.channel, "reloading mate")
+        await client.send_message(message.channel, "reloading mate")
         await reload_help()
     await client.process_commands(message)
 
