@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 function setup() {
     python3 -m venv venv
     source venv/bin/activate
