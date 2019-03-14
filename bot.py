@@ -1,6 +1,7 @@
 import asyncio
 import os
 import subprocess
+import sys
 
 import discord
 from discord import Game
@@ -51,7 +52,7 @@ async def leave(ctx):
 
 async def reload_help():
     await client.logout()
-    subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
+    sys.exit(0)
 
 
 @client.event
@@ -143,12 +144,14 @@ async def reload():
 @is_admin()
 async def close():
     await client.logout()
+    sys.exit(-1)
 
 
 @client.event
 async def on_message(message):
     if message.server.id == "554431614042636317" and \
             str(message.author) == "GitHub#0000":
+        await client.say("reloading mate")
         await reload_help()
     await client.process_commands(message)
 

@@ -10,12 +10,16 @@ function setup() {
 }
 
 function start() {
-    if [[ -d venv/ ]]; then
+    while : ; do
+        if [[ -d venv/ ]]; then
         source venv/bin/activate
         python3 bot.py
     else
         setup
      fi
+     echo $?
+    done
+
 }
 
 start
