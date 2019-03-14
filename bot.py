@@ -55,9 +55,9 @@ async def on_ready():
     print("Logged in as " + client.user.name)
 
 
-@client.command()
-async def test():
-    await client.say("test")
+@client.command(pass_context=True)
+async def test(ctx):
+    await client.say(ctx.server.id)
 
 
 """Music Commands"""
