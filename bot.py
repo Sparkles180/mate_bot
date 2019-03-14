@@ -49,8 +49,8 @@ async def leave(ctx):
         await voice_client.disconnect()
 
 
-def reload_help():
-    client.logout()
+async def reload_help():
+    await client.logout()
     subprocess.Popen(['bash', '-c', '. manager.sh; reload'])
 
 
@@ -136,7 +136,7 @@ async def list_playlist(ctx):
 @client.command(pass_context=True)
 @is_admin()
 async def reload():
-    reload_help()
+    await reload_help()
 
 
 @client.command(pass_context=True)
@@ -149,7 +149,7 @@ async def close():
 async def on_message(message):
     if message.server.id == "554431614042636317" and \
             str(message.author) == "GitHub#0000":
-        reload_help()
+        await reload_help()
     await client.process_commands(message)
 
 
