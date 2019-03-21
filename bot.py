@@ -28,10 +28,6 @@ class MateBot(commands.Bot):
                 await reload_helper_func()
             await client.process_commands(message)
 
-        @commands.command(pass_context=True)
-        async def test(self, ctx):
-            await self.bot.say("test")
-
 
 async def list_servers():
     await client.wait_until_ready()
