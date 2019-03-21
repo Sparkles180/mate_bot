@@ -1,6 +1,3 @@
-
-
-# shamelessly taken from https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/admin.py
 from discord.ext import commands
 
 
