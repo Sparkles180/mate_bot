@@ -11,14 +11,14 @@ function setup() {
 
 function start() {
     while : ; do
-        if [[ -d venv/ ]]; then
-        source venv/bin/activate
-        python3 bot.py
-    else
-        setup
-     fi
-     echo $?
-     git pull
+        if [[ ! -d venv/ ]]; then
+            setup
+    fi
+    source venv/bin/activate
+    pip install -r requirements.txt
+    python3 bot.py
+    echo $?
+    git pull
     done
 
 }
