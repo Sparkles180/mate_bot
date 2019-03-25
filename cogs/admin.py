@@ -14,7 +14,8 @@ class AdminCog(BaseCog):
     @commands.command(pass_context=True)
     @is_admin()
     async def reload(self):
-        await reload_helper_func()
+        await self.bot.say("reloading bot")
+        await reload_helper_func(self.bot)
 
     @commands.command(pass_context=True)
     @is_admin()

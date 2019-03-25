@@ -11,22 +11,10 @@ startup_extension = ['cogs.music','cogs.admin', 'cogs.imdb_cog']
 class MateBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=commands.when_mentioned_or("$"), case_insenitive=True)
-        self.players = {}
-        self.queues = {}
 
         for extension in startup_extension:
             self.load_extension(extension)
 
-
-
-
-async def list_servers():
-    await client.wait_until_ready()
-    while not client.is_closed:
-        print("Current servers:")
-        for server in client.servers:
-            print(server.name)
-        await asyncio.sleep(600)
 
 TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 
@@ -44,7 +32,7 @@ async def on_message(message):
     if message.server.id == "554431614042636317" and \
             str(message.author) == "GitHub#0000":
         await client.send_message(message.channel, "reloading mate")
-        await reload_helper_func()
+        await reload_helper_func(client)
     await client.process_commands(message)
 
 client.run(TOKEN, reconnect=True)
