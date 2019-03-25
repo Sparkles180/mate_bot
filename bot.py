@@ -4,6 +4,7 @@ from discord import Game
 from discord.ext import commands
 from discord.ext.commands import Bot
 from utils.reload import reload_helper_func
+from utils.search import search
 
 startup_extension = ['cogs.music','cogs.admin', 'cogs.imdb_cog']
 
@@ -34,5 +35,10 @@ async def on_message(message):
         await client.send_message(message.channel, "reloading mate")
         await reload_helper_func(client)
     await client.process_commands(message)
+
+
+@client.command()
+async def test():
+    print(search("we didn't start the fire"))
 
 client.run(TOKEN, reconnect=True)

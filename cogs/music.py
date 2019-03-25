@@ -1,6 +1,7 @@
 from discord.ext import commands
 
 from cogs.base_cog import BaseCog
+from utils.search import search
 
 
 class Music(BaseCog):
@@ -10,11 +11,11 @@ class Music(BaseCog):
         self.queues = {}
 
     @commands.command(pass_context=True)
-    async def play(self, ctx, url):
+    async def play(self, ctx, song):
         await self.join(ctx)
         server = ctx.message.server
         voice_client = self.bot.voice_client_in(server)
-        player = await voice_client.create_ytdl_player(url, after=lambda: self.check_queue(ctx))
+        player = await voice_client.create_ytdl_player(search(song), after=lambda: self.check_queue(ctx))
         if self.players.get(server.id) is None:
             self.players[server.id] = player
             player.start()
