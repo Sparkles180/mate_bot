@@ -1,12 +1,10 @@
-import asyncio
 import os
+import cogs
 from discord import Game
 from discord.ext import commands
-from discord.ext.commands import Bot
 from utils.reload import reload_helper_func
-from utils.search import search
 
-startup_extension = ['cogs.music','cogs.admin', 'cogs.imdb_cog']
+startup_extension = cogs.__all__
 
 
 class MateBot(commands.Bot):
@@ -14,7 +12,7 @@ class MateBot(commands.Bot):
         super().__init__(command_prefix=commands.when_mentioned_or("$"), case_insenitive=True)
 
         for extension in startup_extension:
-            self.load_extension(extension)
+            self.load_extension("cogs."+extension)
 
 
 TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
@@ -39,6 +37,6 @@ async def on_message(message):
 
 @client.command()
 async def test():
-    print(search("we didn't start the fire"))
+    print("test")
 
 client.run(TOKEN, reconnect=True)
