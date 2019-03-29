@@ -12,7 +12,5 @@ class Wiki(BaseCog):
         wi = wikipedia.page(query)
         await self.bot.say(wi.url)
 
-
-
 def setup(bot):
     bot.add_cog(Wiki(bot))
