@@ -2,7 +2,7 @@
 
 This is a general purpose bot that I made because I was bored.
 
-##development
+## development
 To add new commands, create a new class in cogs that extends the base cog.
 Make sure to make the file *_cog.py and it will be loaded on start.
 For example:
