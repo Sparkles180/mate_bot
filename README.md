@@ -30,6 +30,6 @@ pip install -r requirements.txt
 python bot.py
 ```
 
-##deployment
+## deployment
 
 When changes are pushed master the bot will reload and pull the latest version from git.
