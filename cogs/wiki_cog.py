@@ -8,7 +8,10 @@ class Wiki(BaseCog):
         super().__init__(bot)
 
     @commands.command()
-    async def wiki(self, query):
+    async def wiki(self, *args):
+        query = ""
+        for item in args:
+            query += item
         wi = wikipedia.page(query)
         await self.bot.say(wi.url)
 
