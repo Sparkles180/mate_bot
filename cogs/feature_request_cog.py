@@ -9,7 +9,7 @@ class FeatureRequestCog(BaseCog):
 
     @commands.command()
     async def request(self, *args):
-        pass
+        await self.bot.say(args)
 
 
 def setup(bot):

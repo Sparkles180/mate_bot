@@ -1,8 +1,6 @@
 from googleapiclient.discovery import build
 from mate_config import config
 
-api_key = ""
-
 
 def search(query):
     youtube = build('youtube', 'v3', developerKey=config.get('api_key'))

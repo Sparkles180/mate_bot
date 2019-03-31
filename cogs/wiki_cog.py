@@ -9,6 +9,7 @@ class Wiki(BaseCog):
 
     @commands.command()
     async def wiki(self, *args):
+        # todo add page check error
         query = ""
         for item in args:
             query += item

@@ -1,7 +1,12 @@
 import os
+
+import discord
+
 import cogs
 from discord import Game
 from discord.ext import commands
+
+from mate_config import config
 from utils.reload import reload_helper_func
 
 startup_extension = cogs.__all__
@@ -15,7 +20,7 @@ class MateBot(commands.Bot):
             self.load_extension("cogs."+extension)
 
 
-TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
+TOKEN = config.get("discord_token")
 
 client = MateBot()
 
@@ -24,6 +29,8 @@ client = MateBot()
 async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
     print("Logged in as " + client.user.name)
+    hard_coded_channel = discord.Object(id=554431614042636320)
+    await client.send_message(hard_coded_channel, content="mate has loaded")
 
 
 @client.event
@@ -35,8 +42,8 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-@client.command()
-async def test():
-    print("test")
+@client.command(pass_context=True)
+async def test(ctx):
+    print(ctx.message.channel.id)
 
 client.run(TOKEN, reconnect=True)
