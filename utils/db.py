@@ -25,7 +25,7 @@ class Database:
     def make_request(self, user_name, content):
         sql_query = "INSERT INTO requests (user_name, content) VALUES (%s, %s);"
         self.cur.execute(sql_query, (user_name, content))
-        self.cur.commit()
+        self.con.commit()
 
     def get_requests(self):
         sql_query = "SELECT * FROM requests"
