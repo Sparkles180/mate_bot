@@ -13,14 +13,14 @@ class Database:
         self.cur = self.con.cursor()
 
     def create_table(self):
-        self.cur.execute("""
-                CREATE TABLE IF NOT EXISTS requests(
-                     id INT auto_increment,
-                    user_name varchar(255) NOT NULL ,
-                    content TEXT,
-                    PRIMARY KEY (id)
-                );
-                """)
+        self.cur.execute("\n"
+                         "                CREATE TABLE IF NOT EXISTS requests(\n"
+                         "                     id INT auto_increment,\n"
+                         "                    user_name varchar(255) NOT NULL ,\n"
+                         "                    content TEXT,\n"
+                         "                    PRIMARY KEY (id)\n"
+                         "                );\n"
+                         "                ")
 
     def make_request(self, user_name, content):
         sql_query = "INSERT INTO requests (user_name, content) VALUES (%s, %s);"
