@@ -22,8 +22,14 @@ class FeatureRequestCog(BaseCog):
         get_db()
         embed = discord.Embed(title='Requests')
         for request in db.get_requests():
-            embed.add_field(name=request.get("user_name"), value=request.get("content"), inline=False)
+            request_str = "user {} requests {}".format(request.get("user_name"), request.get("content"))
+            embed.add_field(name="Request id: {}".format(request.get('id')), value=request_str, inline=False)
         await  self.bot.send_message(ctx.message.channel, embed=embed)
+
+    @commands.command()
+    async def finished(self, request_id):
+        get_db()
+        db.request_complete(request_id)
 
 
 def get_db():

@@ -32,6 +32,11 @@ class Database:
         self.cur.execute(sql_query)
         return self.cur.fetchall()
 
+    def request_complete(self, request_id):
+        sql_remove = "DELETE FROM requests WHERE id=%s"
+        self.cur.execute(sql_remove, request_id)
+        self.con.commit()
+
     def __del__(self):
         self.cur.close()
         self.con.close()
