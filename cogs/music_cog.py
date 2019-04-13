@@ -11,7 +11,7 @@ class Music(BaseCog):
         self.queues = {}
 
     @commands.command(pass_context=True)
-    async def play(self, ctx, song):
+    async def play(self, ctx, *song):
         await self.join(ctx)
         server = ctx.message.server
         voice_client = self.bot.voice_client_in(server)
