@@ -16,7 +16,7 @@ google-auth-oauthlib==0.3.0
 httplib2==0.12.1
 idna==2.8
 IMDbPY==6.6
-lxml==4.3.2
+lxml==4.6.3
 more-itertools==6.0.0
 multidict==4.5.2
 oauthlib==3.0.1
